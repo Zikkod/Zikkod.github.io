@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TON Farm</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="balance">
+                <span id="balance">0</span> $FARM
+            </div>
+            <button id="connectWallet" class="btn">Connect Wallet</button>
+        </header>
+
+        <div class="farm-grid" id="farmGrid"></div>
+
+        <div class="actions">
+            <select id="seedType" class="seed-selector">
+                <option value="green">Green Seed</option>
+                <option value="gold">Gold Seed</option>
+            </select>
+            <button class="btn" id="plantSeed">Plant Seed</button>
+            <button class="btn" id="harvestAll">Harvest All</button>
+        </div>
+
+        <div class="inventory">
+            <div class="inventory-section">
+                <h3>Seeds</h3>
+                <div id="seedsContainer" class="inventory-grid"></div>
+            </div>
+            <div class="inventory-section">
+                <h3>Fruits</h3>
+                <div id="fruitsContainer" class="inventory-grid"></div>
+            </div>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
