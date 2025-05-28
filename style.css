@@ -1,169 +1,281 @@
 body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8f0;
+    color: #333;
     margin: 0;
-    padding: 10px;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    padding: 0;
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
+    padding: 20px;
 }
 
-.header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding: 15px;
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 8px;
+}
+
+.wallet-section {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#connectWallet {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#connectWallet:hover {
+    background-color: #f57c00;
+}
+
+#connectWallet:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+#resetProgress {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#resetProgress:hover {
+    background-color: #d32f2f;
 }
 
 .balance {
     font-size: 18px;
     font-weight: bold;
-    color: #2e7d32;
+    min-width: 120px;
 }
 
-.btn {
-    background-color: #2e7d32;
+.slot-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+#buySlot {
+    background-color: #2196f3;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s;
-    margin: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
-.btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+#buySlot:hover {
+    background-color: #1976d2;
 }
 
-.btn:disabled {
-    background-color: #cccccc;
+#buySlot:disabled {
+    background-color: #90caf9;
     cursor: not-allowed;
-    transform: none;
 }
 
-.seed-selector {
-    padding: 8px;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    border: 1px solid #2e7d32;
-}
-
-.farm-grid {
+.slots-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .slot {
     position: relative;
-    aspect-ratio: 1/1;
+    height: 120px;
     background-color: #8d6e63;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    cursor: pointer;
+    align-items: center;
     overflow: hidden;
-    transition: transform 0.2s;
-}
-
-.slot:hover {
-    transform: scale(1.05);
+    border: 2px solid #5d4037;
 }
 
 .slot.empty {
     background-color: #a1887f;
+    border: 2px dashed #5d4037;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slot.empty::after {
+    content: "+";
+    font-size: 36px;
+    color: rgba(0, 0, 0, 0.3);
 }
 
 .plant {
-    z-index: 2;
-    font-size: 30px;
-    animation: grow 0.5s ease-in-out;
-    color: white;
-    user-select: none;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.progress-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 5px;
+.plant.green {
+    color: #4caf50;
+}
+
+.plant.gold {
+    color: #ffd700;
+}
+
+.plant-icon {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.plant-timer {
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.slot-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.slot-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.harvest-btn {
     background-color: #4caf50;
-    transition: width 0.3s ease;
-    z-index: 1;
+    color: white;
 }
 
-@keyframes grow {
-    from { transform: scale(0); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+.remove-btn {
+    background-color: #f44336;
+    color: white;
 }
 
-.inventory {
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.inventory-section {
-    margin: 10px 0;
+.controls button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.inventory-section h3 {
-    margin: 5px 0;
-    color: #2e7d32;
+#harvestAll {
+    background-color: #4caf50;
+    color: white;
+}
+
+#removeAll {
+    background-color: #f44336;
+    color: white;
 }
 
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
 }
 
 .inventory-item {
-    padding: 10px;
-    background: #f0f0f0;
-    border-radius: 5px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
     text-align: center;
+    border: 1px solid #bdbdbd;
+    transition: transform 0.2s;
     cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
 }
 
 .inventory-item:hover {
-    transform: scale(1.05);
-    background: #e0e0e0;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
 
-.inventory-item:active {
-    transform: scale(0.98);
+.inventory-item.green {
+    background-color: #e8f5e9;
+    border-color: #4caf50;
+}
+
+.inventory-item.gold {
+    background-color: #fffde7;
+    border-color: #ffd700;
+}
+
+.item-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.item-count {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .notification {
     position: fixed;
-    bottom: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.8);
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    background-color: #4caf50;
     color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    display: none;
-    z-index: 100;
-    animation: fadeIn 0.3s;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transform: translateX(110%);
+    transition: transform 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background-color: #f44336;
 }
