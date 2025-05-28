@@ -10,10 +10,12 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
@@ -21,6 +23,7 @@ header {
     background-color: #2e7d32;
     color: white;
     border-radius: 8px;
+    gap: 10px;
 }
 
 .wallet-section {
@@ -39,6 +42,7 @@ header {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
+    flex-shrink: 0;
 }
 
 #connectWallet:hover {
@@ -59,6 +63,7 @@ header {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
+    flex-shrink: 0;
 }
 
 #resetProgress:hover {
@@ -69,6 +74,7 @@ header {
     font-size: 18px;
     font-weight: bold;
     min-width: 120px;
+    flex-shrink: 0;
 }
 
 .slot-info {
@@ -80,6 +86,8 @@ header {
     background-color: #e8f5e9;
     border-radius: 8px;
     font-weight: bold;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 #buySlot {
@@ -91,6 +99,7 @@ header {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
+    flex-shrink: 0;
 }
 
 #buySlot:hover {
@@ -102,16 +111,17 @@ header {
     cursor: not-allowed;
 }
 
+/* Исправленная сетка слотов */
 .slots-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
 }
 
 .slot {
     position: relative;
-    height: 120px;
+    aspect-ratio: 1/1; /* Сохраняем квадратную форму */
     background-color: #8d6e63;
     border-radius: 8px;
     display: flex;
@@ -143,6 +153,7 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .plant.green {
@@ -162,12 +173,15 @@ header {
     font-size: 14px;
     margin-top: 5px;
     font-weight: bold;
+    word-break: break-word;
 }
 
 .slot-actions {
     display: flex;
     gap: 5px;
     margin-top: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .slot-btn {
@@ -176,6 +190,7 @@ header {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
+    flex-shrink: 0;
 }
 
 .harvest-btn {
@@ -192,6 +207,7 @@ header {
     display: flex;
     gap: 10px;
     margin-top: 15px;
+    flex-wrap: wrap;
 }
 
 .controls button {
@@ -200,6 +216,7 @@ header {
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    flex-grow: 1;
 }
 
 #harvestAll {
@@ -226,6 +243,10 @@ header {
     border: 1px solid #bdbdbd;
     transition: transform 0.2s;
     cursor: pointer;
+    aspect-ratio: 1/1; /* Сохраняем квадратную форму */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .inventory-item:hover {
@@ -251,6 +272,7 @@ header {
 .item-name {
     font-weight: bold;
     margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .item-count {
@@ -270,6 +292,8 @@ header {
     z-index: 1000;
     transform: translateX(110%);
     transition: transform 0.3s ease-out;
+    max-width: 300px;
+    word-break: break-word;
 }
 
 .notification.show {
@@ -278,4 +302,43 @@ header {
 
 .notification.error {
     background-color: #f44336;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .wallet-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .slot-info {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .slots-container {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+
+    .plant-icon {
+        font-size: 24px;
+    }
+
+    .plant-timer {
+        font-size: 12px;
+    }
 }
