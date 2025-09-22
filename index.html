@@ -3,44 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Farm Game</title>
+    <title>Ферма в Telegram: Play-to-Earn</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="wallet-section">
-                <button id="connectWallet">Connect Wallet</button>
-                <div class="balance">
-                    <span>Баланс: </span>
-                    <span id="balance">0</span>
-                    <span> TON</span>
-                </div>
-                <button id="resetProgress">Сбросить прогресс</button>
+    <div class="app-container">
+        <!-- Контейнер для уведомлений -->
+        <div id="notifications-container"></div>
+        
+        <!-- Закрепленная шапка -->
+        <div class="app-header">
+            <div class="user-avatar-container" id="profile-btn">
+                <div class="user-avatar">U</div>
             </div>
-        </header>
-
-        <main>
-            <section class="farm-field">
-                <h2>Ваша ферма</h2>
-                <div class="slot-info">
-                    <span>Слотов: <span id="slotCount">5</span></span>
-                    <button id="buySlot">Купить слот (10 TON)</button>
+            
+            <div class="header-resources">
+                <div class="balance-container">
+                    <span>Баланс:</span>
+                    <span id="balance">0.00</span>
+                    <span>TON</span>
                 </div>
-                <div id="plantingSlots" class="slots-container"></div>
-                <div class="controls">
-                    <button id="harvestAll">Собрать все</button>
-                    <button id="removeAll">Удалить все</button>
+                <div class="water-container">
+                    <div class="water-bar">
+                        <div class="water-fill" id="water-fill"></div>
+                    </div>
+                    <div class="water-text">
+                        <span id="current-water">30</span>/<span id="max-water">30</span>
+                        <span class="recovery-rate">+<span id="water-rate">1</span>/мин</span>
+                    </div>
                 </div>
-            </section>
-
-            <section class="inventory">
+                <div class="farm-ticket-container">
+                    <span>Фарм-билеты:</span>
+                    <span id="farm-ticket-count">0</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button class="btn water" id="water-btn">
+                    <i>💧</i> +5 воды
+                </button>
+                <button class="btn primary" id="buy-slot-btn">
+                    Купить слот
+                </button>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Главный экран -->
+            <div id="main-screen" class="screen active">
+                <div class="field-container" id="field-container"></div>
+                
+                <div class="fixed-bottom-container">
+                    <div class="seed-selector">
+                        <select id="seed-select">
+                            <option value="green">Зеленое растение</option>
+                            <option value="gold">Золотое растение</option>
+                        </select>
+                    </div>
+                    
+                    <div class="action-panel">
+                        <div class="action-row">
+                            <button class="btn primary" id="plant-btn">Посадить</button>
+                            <button class="btn primary" id="plant-all-btn">Посадить все</button>
+                        </div>
+                        <div class="action-row">
+                            <button class="btn harvest" id="harvest-all-btn">Собрать все</button>
+                            <button class="btn danger" id="remove-all-btn">Удалить все</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Инвентарь -->
+            <div id="inventory-screen" class="screen">
                 <h2>Инвентарь</h2>
-                <div id="inventoryItems" class="inventory-grid"></div>
-            </section>
-        </main>
+                <div class="inventory-grid" id="inventory-grid"></div>
+            </div>
+            
+            <!-- Маркетплейс -->
+            <div id="market-screen" class="screen">
+                <h2>Маркетплейс</h2>
+                
+                <div class="market-tabs">
+                    <button class="tab-btn active" data-market-type="farm-coin">Farm Coin</button>
+                    <button class="tab-btn" data-market-type="farm-token">Farm Token</button>
+                </div>
+                
+                <div class="market-content">
+                    <div class="market-item">
+                        <div class="item-icon">⭐</div>
+                        <div class="item-info">
+                            <div class="item-name">Золотой плод</div>
+                            <div class="item-price">1.00 TON</div>
+                        </div>
+                        <div class="item-quantity">
+                            <input type="number" id="gold-fruit-quantity" min="1" value="1">
+                        </div>
+                    </div>
+                    
+                    <button class="btn primary" id="sell-gold-btn">Продать золотые плоды</button>
+                    
+                    <div class="commission-info" id="commission-info">
+                        Комиссия: 10% (5% рефереру, 5% проекту)
+                    </div>
+                    
+                    <h3>История транзакций</h3>
+                    <div id="market-history"></div>
+                </div>
+            </div>
+            
+            <!-- Профиль -->
+            <div id="profile-screen" class="screen">
+                <div class="profile-header">
+                    <div class="profile-avatar">U</div>
+                    <h2>Ваш профиль</h2>
+                </div>
+                
+                <div class="ton-actions">
+                    <button class="btn primary" id="deposit-btn">Пополнить TON</button>
+                    <button class="btn danger" id="withdraw-btn">Вывести TON</button>
+                </div>
+                
+                <div class="subscription-section">
+                    <h3>Подписка "Плодородный сезон"</h3>
+                    <div class="subscription-status">
+                        <span>Текущий статус: <span id="subscription-status">Стандартный</span></span>
+                        <button class="btn premium" id="premium-btn">Активировать</button>
+                    </div>
+                </div>
+                
+                <div class="referral-section">
+                    <h3>Реферальная система</h3>
+                    <p>Приглашайте друзей и получайте 5% комиссии с их продаж</p>
+                    <div class="referral-code">
+                        <input type="text" id="referral-code" value="REF-12345" readonly>
+                        <button class="btn primary" id="copy-ref-btn">Копировать</button>
+                    </div>
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Статистика</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i>🌱</i>
+                            <span>Посажено растений</span>
+                            <strong id="stats-plants">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <i>🌾</i>
+                            <span>Собрано урожая</span>
+                            <strong id="stats-harvests">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <i>💧</i>
+                            <span>Использовано воды</span>
+                            <strong id="stats-water">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <i>💰</i>
+                            <span>Заработано TON</span>
+                            <strong id="stats-ton">0.00</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="farm-ticket-section">
+                    <h3>Фарм-билеты</h3>
+                    <p>Количество фарм-билетов влияет на размер airdrop farm token</p>
+                    <div class="farm-ticket-stats">
+                        <p>Текущее количество: <strong id="farm-ticket-count-profile">0</strong></p>
+                        <p>Ожидаемый airdrop: <strong id="airdrop-estimate">0.00</strong> TON</p>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Настройки</h3>
+                    <div class="setting-item">
+                        <label for="referral-code-input">Реферальный код</label>
+                        <div class="input-group">
+                            <input type="text" id="referral-code-input" placeholder="Введите реферальный код">
+                            <button class="btn primary" id="apply-ref-btn">Применить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Бездонная яма -->
+            <div id="dump-screen" class="screen">
+                <h2>Бездонная яма</h2>
+                <p>Сбросьте ресурсы в яму, чтобы получить случайные награды</p>
+                <p>Уровень ямы: <span id="dump-level">1</span> (<button class="btn small" id="upgrade-dump-btn">Улучшить</button>)</p>
+                
+                <div class="dump-resources">
+                    <h3>Доступные ресурсы для сброса</h3>
+                    <div class="dump-grid" id="dump-resources-grid"></div>
+                </div>
+                
+                <div class="dump-result">
+                    <h3>Последний дроп</h3>
+                    <div class="dump-drop" id="last-drop">
+                        <div class="drop-item">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Крафт предметов -->
+            <div id="craft-screen" class="screen">
+                <h2>Крафт предметов</h2>
+                <div class="craft-tabs">
+                    <button class="tab-btn active" data-craft-type="all">Все рецепты</button>
+                    <button class="tab-btn" data-craft-type="available">Доступные</button>
+                </div>
+                
+                <div class="craft-grid" id="craft-grid"></div>
+            </div>
+            
+            <!-- Странствующий торговец -->
+            <div id="merchant-screen" class="screen">
+                <h2>Странствующий торговец</h2>
+                <p>Ежедневно обновляющиеся предложения</p>
+                
+                <div class="merchant-offers">
+                    <h3>Предложения для покупки</h3>
+                    <div class="merchant-grid" id="merchant-buy-grid"></div>
+                    
+                    <h3>Предложения для продажи</h3>
+                    <div class="merchant-grid" id="merchant-sell-grid"></div>
+                </div>
+            </div>
+            
+            <!-- Работники -->
+            <div id="workers-screen" class="screen">
+                <h2>Работники фермы</h2>
+                <p>Работники могут сажать и собирать урожай, когда вы оффлайн</p>
+                
+                <div class="workers-container">
+                    <div class="worker-card" id="worker-1">
+                        <div class="worker-header">
+                            <div class="worker-icon">👨‍🌾</div>
+                            <div class="worker-name">Работник #1</div>
+                        </div>
+                        <div class="worker-status">
+                            <span>Статус: <span id="worker-status-1">Свободен</span></span>
+                            <span class="worker-time" id="worker-time-1">До окончания: 00:00:00</span>
+                        </div>
+                        <div class="worker-actions">
+                            <button class="btn primary" id="hire-worker-btn">Нанять</button>
+                            <button class="btn danger" id="fire-worker-btn">Уволить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="worker-settings">
+                    <h3>Настройки работы</h3>
+                    <p>Выберите слот для работы</p>
+                    <select id="worker-slot-select">
+                        <option value="1">Слот 1</option>
+                        <option value="2">Слот 2</option>
+                        <option value="3">Слот 3</option>
+                    </select>
+                    <p>Выберите семена для посадки</p>
+                    <select id="worker-seed-select">
+                        <option value="green">Зеленое растение</option>
+                        <option value="gold">Золотое растение</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Навигация -->
+        <div class="app-navigation">
+            <button class="nav-btn active" data-screen="main">
+                <i>🏠</i>
+                <span>Ферма</span>
+            </button>
+            <button class="nav-btn" data-screen="inventory">
+                <i>🎒</i>
+                <span>Инвентарь</span>
+            </button>
+            <button class="nav-btn" data-screen="market">
+                <i>🛒</i>
+                <span>Маркет</span>
+            </button>
+            <button class="nav-btn" data-screen="dump">
+                <i>🕳️</i>
+                <span>Яма</span>
+            </button>
+            <button class="nav-btn" data-screen="craft">
+                <i>⚙️</i>
+                <span>Крафт</span>
+            </button>
+            <button class="nav-btn" data-screen="merchant">
+                <i>🛒</i>
+                <span>Торговец</span>
+            </button>
+            <button class="nav-btn" data-screen="workers">
+                <i>👷</i>
+                <span>Работники</span>
+            </button>
+            <button class="nav-btn" data-screen="profile">
+                <i>👤</i>
+                <span>Профиль</span>
+            </button>
+        </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
